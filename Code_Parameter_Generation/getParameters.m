@@ -227,3 +227,12 @@ for dE12 = [0, 0.2, 0.4, 0.6, 0.8, 1]
         createParameters(txt_name, writeoption, p, 1)
     end
 end
+
+%% Subfunction
+function [txt_name,writeoption] = getName(name_all)
+    txt_name = fullfile('..','parameters',strcat(name_all,'.txt'));
+    writeoption = 'a';
+    if exist(txt_name,'file')
+        delete(txt_name)
+    end
+end
