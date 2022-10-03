@@ -101,7 +101,7 @@ numPB = zeros(M_GC,1);
 numPC = zeros(M_GC,1);
 numMC = zeros(M_GC,1);
 
-result = struct();
+result = [];
 % Flatten the arrays to 2D for the convenience of operations
 flatten2D = @(A) reshape(permute(A,[2,1,3]), size(A,2),[])';
 naiveBcells = flatten2D(naiveBcells);
@@ -493,7 +493,7 @@ result.dead = dead;
 idx = 1+4*(0:7:param.tmax);
 result.gc.numbylineage = result.gc.numbylineage(:,idx,:);
 [result.output.finalmem, result.output.memMutations] = ...
-    getMemoryMutations(result.output.finalmem, mutations);
+    getMemoryMutations(result.output.finalmem, mutations, param);
 
 %Reshape back to 3D arrays
 if saveresult
@@ -505,7 +505,7 @@ end
 
 %% subfunctions
 function [memory, mutationsCompact] = ...
-    getMemoryMutations(memory, mutations)
+    getMemoryMutations(memory, mutations, param)
 %% Documentation
 % Summary:
 %  Returns the mutation sizes of the memory cells. This enables only the
@@ -523,7 +523,7 @@ function [memory, mutationsCompact] = ...
 
 [m1,m2,m3] = size(memory);
 uniqueCloneNum = 0;
-mutationsCompact = zeros(2, m2, n_res);
+mutationsCompact = zeros(2, m2, param.n_res);
 for k=1:m1
    uniqueClones = setdiff(unique(squeeze(memory(k,:,1))),[0]);
    for j=1:length(uniqueClones)
